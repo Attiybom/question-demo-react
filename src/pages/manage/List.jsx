@@ -1,54 +1,18 @@
-import { useState } from "react";
 import styles from "./common.module.scss";
 import QuestionCard from "../../components/QuestionCard";
-// import { useSearchParams } from "react-router-dom";
 import { useTitle } from "ahooks";
-import { Typography } from "antd";
+import { Typography, Spin } from "antd";
 import ListSearch from "../../components/ListSearch";
-
-const rawData = [
-  {
-    id: "q1",
-    title: "问卷1",
-    isPublished: false,
-    isStar: true,
-    answerCount: 2,
-    createAt: "2023.04.10",
-  },
-  {
-    id: "q2",
-    title: "问卷2",
-    isPublished: true,
-    isStar: false,
-    answerCount: 3,
-    createAt: "2023.05.10",
-  },
-  {
-    id: "q3",
-    title: "问卷3",
-    isPublished: false,
-    isStar: true,
-    answerCount: 4,
-    createAt: "2023.01.11",
-  },
-  {
-    id: "q4",
-    title: "问卷4",
-    isPublished: true,
-    isStar: false,
-    answerCount: 0,
-    createAt: "2023.06.20",
-  },
-];
+// import { getQuestionListService } from "../../services/question";
+import useLoadQuestionListData from "../../hooks/useLoadQuestionListData";
 
 export default function List() {
   useTitle("小慕问卷-我的问卷");
-  const [dataList, setDataList] = useState(rawData);
+  // const [dataList, setDataList] = useState([]);
   const { Title } = Typography;
-  // const [SearchParams] = useSearchParams();
 
-  // const keyword = SearchParams.get("keyword");
-  // console.info("keyword", keyword);
+  const { data = {}, loading } = useLoadQuestionListData();
+  const { list = [], total = 0 } = data;
 
   return (
     <>
@@ -61,8 +25,15 @@ export default function List() {
         </div>
       </div>
       <div className={styles.content}>
-        {dataList.length &&
-          dataList.map((item) => {
+        {loading && (
+          <div style={{ textAlign: "center" }}>
+            <Spin></Spin>
+          </div>
+        )}
+
+        {!loading &&
+          list.length > 0 &&
+          list.map((item) => {
             const { id } = item;
 
             return (

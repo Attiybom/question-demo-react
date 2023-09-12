@@ -11,35 +11,10 @@ import {
   message,
   Popconfirm,
   Modal,
+  Spin,
 } from "antd";
 import ListSearch from "../../components/ListSearch";
-
-const rawData = [
-  {
-    id: "q1",
-    title: "问卷1",
-    isPublished: false,
-    isStar: true,
-    answerCount: 2,
-    createAt: "2023.04.10",
-  },
-  {
-    id: "q2",
-    title: "问卷2",
-    isPublished: true,
-    isStar: true,
-    answerCount: 3,
-    createAt: "2023.05.10",
-  },
-  {
-    id: "q3",
-    title: "问卷3",
-    isPublished: false,
-    isStar: false,
-    answerCount: 4,
-    createAt: "2023.01.11",
-  },
-];
+import useLoadQuestionListData from "../../hooks/useLoadQuestionListData";
 
 const columns = [
   {
@@ -71,9 +46,11 @@ const columns = [
 
 export default function Trash() {
   useTitle("小慕问卷-回收站");
-  const [dataList, setDataList] = useState(rawData);
   const { Title } = Typography;
   const [selectRows, setSelectRows] = useState([]);
+
+  const { data = {}, loading } = useLoadQuestionListData({ isDeleted: true });
+  const { list = [], total = 0 } = data;
 
   const handleDel = () => {
     console.info("clickDel");
@@ -102,7 +79,7 @@ export default function Trash() {
       </div>
 
       <Table
-        dataSource={dataList}
+        dataSource={list}
         columns={columns}
         rowKey={(q) => q.id}
         rowSelection={{
@@ -126,9 +103,14 @@ export default function Trash() {
           <ListSearch></ListSearch>
         </div>
       </div>
+      {loading && (
+        <div style={{ textAlign: "center" }}>
+          <Spin></Spin>
+        </div>
+      )}
       <div className={styles.content}>
-        {!dataList.length && <Empty />}
-        {dataList.length > 0 && TableEl}
+        {!loading && !list.length && <Empty />}
+        {list.length > 0 && TableEl}
       </div>
     </>
   );

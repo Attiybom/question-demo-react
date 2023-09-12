@@ -9,22 +9,34 @@ import {
 } from "@ant-design/icons";
 import { useState } from "react";
 import { createQuestionService } from "../services/question";
+import { useRequest } from "ahooks";
 
 export default function ManageLayout() {
   const nav = useNavigate();
   const { pathname } = useLocation();
 
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
-  async function handleClickCreate() {
-    setLoading(true);
-    const data = await createQuestionService();
-    const { id } = data || {};
-    nav(`/question/edit/${id}`);
-    message.success("创建问卷成功！");
+  // async function handleClickCreate() {
+  //   setLoading(true);
+  //   const data = await createQuestionService();
+  //   const { id } = data || {};
+  //   nav(`/question/edit/${id}`);
+  //   message.success("创建问卷成功！");
 
-    setLoading(false);
-  }
+  //   setLoading(false);
+  // }
+
+  const { loading, run: handleClickCreate } = useRequest(
+    createQuestionService,
+    {
+      manual: true,
+      onSuccess(res) {
+        nav(`/question/edit/${res.id}`);
+        message.success("创建问卷成功！");
+      },
+    }
+  );
 
   // console.info("pathname", pathname);
   return (

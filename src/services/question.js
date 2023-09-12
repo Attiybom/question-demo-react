@@ -14,3 +14,10 @@ export async function createQuestionService() {
 
   return data
 }
+
+export async function getQuestionListService(option = {}) {
+  const url = `/api/question`
+  const data = (await axios.get(url, { params: option }))
+
+  return data
+}

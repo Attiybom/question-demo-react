@@ -1,41 +1,16 @@
-import { useState } from "react";
 import styles from "./common.module.scss";
 import QuestionCard from "../../components/QuestionCard";
 import { useTitle } from "ahooks";
-import { Typography, Empty } from "antd";
+import { Typography, Empty, Spin } from "antd";
 import ListSearch from "../../components/ListSearch";
-
-const rawData = [
-  {
-    id: "q1",
-    title: "问卷1",
-    isPublished: false,
-    isStar: true,
-    answerCount: 2,
-    createAt: "2023.04.10",
-  },
-  {
-    id: "q2",
-    title: "问卷2",
-    isPublished: true,
-    isStar: true,
-    answerCount: 3,
-    createAt: "2023.05.10",
-  },
-  {
-    id: "q3",
-    title: "问卷3",
-    isPublished: false,
-    isStar: true,
-    answerCount: 4,
-    createAt: "2023.01.11",
-  },
-];
+import useLoadQuestionListData from "../../hooks/useLoadQuestionListData";
 
 export default function Star() {
   useTitle("小慕问卷-星标问卷");
-  const [dataList, setDataList] = useState(rawData);
   const { Title } = Typography;
+
+  const { data = {}, loading } = useLoadQuestionListData({ isStar: true });
+  const { list = [], total = 0 } = data;
 
   return (
     <>
@@ -49,9 +24,16 @@ export default function Star() {
         </div>
       </div>
       <div className={styles.content}>
-        {!dataList.length && <Empty />}
-        {dataList.length > 0 &&
-          dataList.map((item) => {
+        {loading && (
+          <div style={{ textAlign: "center" }}>
+            <Spin></Spin>
+          </div>
+        )}
+
+        {!loading && !list.length && <Empty />}
+        {!loading &&
+          list.length > 0 &&
+          list.map((item) => {
             const { id } = item;
 
             return (
