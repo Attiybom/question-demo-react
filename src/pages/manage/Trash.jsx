@@ -12,6 +12,7 @@ import {
   Popconfirm,
   Modal,
 } from "antd";
+import ListSearch from "../../components/ListSearch";
 
 const rawData = [
   {
@@ -121,7 +122,9 @@ export default function Trash() {
         <div className={styles.left}>
           <Title level={3}>回收站</Title>
         </div>
-        <div className={styles.right}>（搜索）</div>
+        <div className={styles.right}>
+          <ListSearch></ListSearch>
+        </div>
       </div>
       <div className={styles.content}>
         {!dataList.length && <Empty />}
