@@ -1,6 +1,7 @@
 import { useNavigate, Link } from "react-router-dom";
 import { Typography, Button } from "antd";
 import styles from "./Home.module.scss";
+import { useEffect } from "react";
 
 const { Title, Paragraph } = Typography;
 
@@ -10,6 +11,12 @@ export default function Home() {
   // const clickLogin = () => {
   //   nav("login");
   // };
+
+  useEffect(() => {
+    fetch("/api/question/100").then((res) => {
+      console.info("fetch_res", res);
+    });
+  }, []);
 
   return (
     <div>

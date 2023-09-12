@@ -1,23 +1,42 @@
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import styles from "./ManageLayout.module.scss";
-import { Button, Space, Divider } from "antd";
+import { Button, Space, Divider, message } from "antd";
 import {
   PlusOutlined,
   UnorderedListOutlined,
   StarOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
+import { useState } from "react";
+import { createQuestionService } from "../services/question";
 
 export default function ManageLayout() {
   const nav = useNavigate();
   const { pathname } = useLocation();
+
+  const [loading, setLoading] = useState(false);
+
+  async function handleClickCreate() {
+    setLoading(true);
+    const data = await createQuestionService();
+    const { id } = data || {};
+    nav(`/question/edit/${id}`);
+    message.success("创建问卷成功！");
+
+    setLoading(false);
+  }
 
   // console.info("pathname", pathname);
   return (
     <div className={styles.container}>
       <div className={styles.left}>
         <Space wrap>
-          <Button type="primary" icon={<PlusOutlined />}>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={handleClickCreate}
+            disabled={loading}
+          >
             创建问卷
           </Button>
           <Divider />

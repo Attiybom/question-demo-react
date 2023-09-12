@@ -34,7 +34,7 @@ export default function Login() {
   useEffect(() => {
     const { username, password } = getInfoFromStorage();
     form.setFieldsValue({ username, password });
-  });
+  }, []);
 
   // 提交
   const onFinish = (values) => {
