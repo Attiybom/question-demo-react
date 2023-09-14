@@ -1,12 +1,16 @@
-import { Space, Typography } from "antd";
+import { Space, Typography, message } from "antd";
 import styles from "./Login.module.scss";
 import { UserAddOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { useRequest } from "ahooks";
+import { loginService } from "../services/user";
 
 export default function Login() {
   const { Title } = Typography;
+
+  const nav = useNavigate();
 
   const USERNAME_KEY = "username";
   const PASSWORD_KEY = "password";
@@ -36,10 +40,31 @@ export default function Login() {
     form.setFieldsValue({ username, password });
   }, []);
 
+  // 登录逻辑
+  const { run: handleLogin } = useRequest(
+    async (values) => {
+      const data = loginService(values);
+      return data;
+    },
+    {
+      manual: true,
+      debounceWait: 500,
+      onSuccess() {
+        message.success("登录成功！");
+
+        nav("/manage/list");
+      },
+    }
+  );
+
   // 提交
   const onFinish = (values) => {
     console.log("Success:", values);
     const { username, password, remember } = values || {};
+    handleLogin({
+      username,
+      password,
+    });
 
     if (remember) {
       rememberInfo(username, password);

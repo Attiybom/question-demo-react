@@ -1,14 +1,39 @@
 import { Space, Typography } from "antd";
 import styles from "./Register.module.scss";
 import { UserAddOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input } from "antd";
-import { Link } from "react-router-dom";
+import { Button, Checkbox, Form, Input, message } from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import { useRequest } from "ahooks";
+import { registerService } from "../services/user";
+import { setUserToken } from "../utils/user-token";
 
 export default function Register() {
   const { Title } = Typography;
 
+  const nav = useNavigate();
+
+  // 注册逻辑
+  const { run: handleRegister } = useRequest(
+    async (values) => {
+      const data = await registerService(values);
+      return data;
+    },
+    {
+      manual: true,
+      debounceWait: 500,
+      onSuccess(res) {
+        console.info("register-res", res);
+        const { token } = res;
+        setUserToken(token);
+        message.success("注册成功，进入首页！");
+        nav("/manage/list");
+      },
+    }
+  );
+
   const onFinish = (values) => {
-    console.log("Success:", values);
+    // console.log("Success:", values);
+    handleRegister(values);
   };
   return (
     <div className={styles.container}>
