@@ -8,18 +8,66 @@ import {
   EditOutlined,
 } from "@ant-design/icons";
 import { useNavigate, Link } from "react-router-dom";
+import { useState } from "react";
+import { useRequest } from "ahooks";
+import {
+  updateQuestionListService,
+  copyQuestionService,
+} from "../services/question";
 
 export default function QuestionCard(props) {
   const { id, title, isPublished, isStar, answerCount, createAt } = props;
 
   const nav = useNavigate();
 
-  function handleCopy() {
-    message.success("复制成功！");
-  }
-  function handleDel() {
-    message.success("删除成功！");
-  }
+  const { loading: copyLoading, run: handleCopy } = useRequest(
+    async () => {
+      const data = await copyQuestionService(id);
+      return data;
+    },
+    {
+      manual: true,
+      onSuccess(res) {
+        message.success("复制成功！");
+        nav(`/question/edit/${res.id}`);
+      },
+    }
+  );
+
+  const [isDeletedState, setIsDeletedState] = useState(false);
+  const { loading: delLoading, run: handleDel } = useRequest(
+    async () =>
+      await updateQuestionListService(id, {
+        isDeleted: true,
+      }),
+    {
+      manual: true,
+      onSuccess() {
+        message.success("删除成功！");
+        setIsDeletedState(true);
+      },
+    }
+  );
+
+  // 标星功能交互
+  const [isStarState, setIsStarState] = useState(isStar);
+  const { loading: changeStarLoading, run: handleChangeStar } = useRequest(
+    async () => {
+      await updateQuestionListService(id, {
+        isStar: !isStarState,
+      });
+    },
+    {
+      manual: true,
+      onSuccess() {
+        setIsStarState(!isStarState);
+        message.success(isStarState ? "标星成功！" : "取消标星成功！");
+      },
+    }
+  );
+
+  // 这段必须放在最后，不然会报错 => 不再渲染卡片
+  if (isDeletedState) return null;
 
   return (
     <div className={styles.container}>
@@ -29,7 +77,9 @@ export default function QuestionCard(props) {
             to={isPublished ? `/question/edit/${id}` : `/question/stat/${id}`}
           >
             <Space>
-              {isStar && <StarOutlined style={{ color: "red" }}></StarOutlined>}
+              {isStarState && (
+                <StarOutlined style={{ color: "red" }}></StarOutlined>
+              )}
               {title}
             </Space>
           </Link>
@@ -71,15 +121,22 @@ export default function QuestionCard(props) {
         </div>
         <div className={styles.right}>
           <Space>
-            <Button icon={<StarOutlined />} type="text" size="small">
-              {isStar ? "取消标星" : "标星"}
+            <Button
+              icon={<StarOutlined />}
+              type="text"
+              size="small"
+              onClick={handleChangeStar}
+              disabled={changeStarLoading}
+            >
+              {isStarState ? "取消标星" : "标星"}
             </Button>
             <Popconfirm
               placement="top"
               title="是否确定复制？"
               okText="确定"
               cancelText="取消"
-              onConfirm={handleCopy}
+              onConfirm={() => handleCopy(id)}
+              disabled={copyLoading}
             >
               <Button icon={<CopyOutlined />} type="text" size="small">
                 复制
@@ -91,6 +148,7 @@ export default function QuestionCard(props) {
               okText="确定"
               cancelText="取消"
               onConfirm={handleDel}
+              disabled={delLoading}
             >
               <Button icon={<DeleteOutlined />} type="text" size="small">
                 删除

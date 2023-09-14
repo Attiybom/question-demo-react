@@ -4,6 +4,7 @@ import { useTitle } from "ahooks";
 import { Typography, Empty, Spin } from "antd";
 import ListSearch from "../../components/ListSearch";
 import useLoadQuestionListData from "../../hooks/useLoadQuestionListData";
+import ListPagination from "../../components/ListPagination";
 
 export default function Star() {
   useTitle("小慕问卷-星标问卷");
@@ -45,7 +46,9 @@ export default function Star() {
             );
           })}
       </div>
-      <div className={styles.footer}>分页</div>
+      <div className={styles.footer}>
+        <ListPagination total={total}></ListPagination>
+      </div>
     </>
   );
 }

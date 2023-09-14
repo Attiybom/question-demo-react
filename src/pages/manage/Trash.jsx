@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from "./common.module.scss";
-import { useTitle } from "ahooks";
+import { useTitle, useRequest } from "ahooks";
 import {
   Typography,
   Empty,
@@ -9,12 +9,16 @@ import {
   Space,
   Button,
   message,
-  Popconfirm,
   Modal,
   Spin,
 } from "antd";
 import ListSearch from "../../components/ListSearch";
 import useLoadQuestionListData from "../../hooks/useLoadQuestionListData";
+import ListPagination from "../../components/ListPagination";
+import {
+  updateQuestionListService,
+  deleteQuestionService,
+} from "../../services/question";
 
 const columns = [
   {
@@ -47,17 +51,60 @@ const columns = [
 export default function Trash() {
   useTitle("小慕问卷-回收站");
   const { Title } = Typography;
+
+  const {
+    data = {},
+    loading,
+    refresh,
+  } = useLoadQuestionListData({ isDeleted: true });
+  const { list = [], total = 0 } = data;
+
+  // 选中的ids
   const [selectRows, setSelectRows] = useState([]);
 
-  const { data = {}, loading } = useLoadQuestionListData({ isDeleted: true });
-  const { list = [], total = 0 } = data;
+  // 恢复按钮逻辑
+  const { loading: restoreLoading, run: handleRestore } = useRequest(
+    async () => {
+      for await (let id of selectRows) {
+        await updateQuestionListService(id, {
+          isDeleted: false,
+        });
+      }
+    },
+    {
+      manual: true,
+      debounceWait: 500,
+      onSuccess(res) {
+        message.success("恢复成功！");
+        refresh(); //重新加载数据
+        setSelectRows([]);
+      },
+    }
+  );
+
+  // 删除逻辑
+
+  const { run: deleteQuestion, loading: deleteLoading } = useRequest(
+    async () => deleteQuestionService(selectRows),
+    {
+      manual: true,
+      debounceWait: 500,
+      onSuccess() {
+        message.success("删除成功！");
+      },
+    }
+  );
 
   const handleDel = () => {
     console.info("clickDel");
     Modal.warning({
       title: "是否确定删除该问卷？",
       content: "删除后无法恢复",
-      onOk: () => message.success("删除成功！"),
+      onOk: () => {
+        deleteQuestion();
+        refresh();
+        setSelectRows([]);
+      },
     });
   };
 
@@ -66,13 +113,17 @@ export default function Trash() {
       <div style={{ marginBottom: "12px" }}>
         <Space>
           <Button
-            onClick={() => console.info("selectRows", selectRows)}
             type="primary"
-            disabled={selectRows.length === 0}
+            disabled={selectRows.length === 0 || restoreLoading}
+            onClick={handleRestore}
           >
             恢复
           </Button>
-          <Button onClick={handleDel} disabled={selectRows.length === 0} danger>
+          <Button
+            onClick={handleDel}
+            disabled={selectRows.length === 0 || deleteLoading}
+            danger
+          >
             彻底删除
           </Button>
         </Space>
@@ -82,6 +133,7 @@ export default function Trash() {
         dataSource={list}
         columns={columns}
         rowKey={(q) => q.id}
+        pagination={false}
         rowSelection={{
           type: "checkbox",
           onChange: (selectedRowKeys) => {
@@ -111,6 +163,9 @@ export default function Trash() {
       <div className={styles.content}>
         {!loading && !list.length && <Empty />}
         {list.length > 0 && TableEl}
+      </div>
+      <div className={styles.footer}>
+        <ListPagination total={total}></ListPagination>
       </div>
     </>
   );
