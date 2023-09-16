@@ -5,15 +5,21 @@ import { Button, message } from "antd";
 import { useRequest } from "ahooks";
 import { removeUserToken } from "../utils/user-token";
 import { useState } from "react";
+import useGetUserInfo from "../hooks/useGetUserInfo";
+import { useDispatch } from "react-redux";
+import { layoutAction } from "../store/user";
 
 export default function UserInfo() {
   const nav = useNavigate();
+
+  const dispatch = useDispatch();
 
   // const [userName, setUserName] = useState("");
   // const [nickName, setNickName] = useState("");
 
   // 退出逻辑
   const clickLayout = () => {
+    dispatch(layoutAction());
     message.success("退出成功");
     removeUserToken(); //移除token
     nav("/login");
@@ -22,8 +28,9 @@ export default function UserInfo() {
   };
 
   // 获取用户信息
-  const { data } = useRequest(getUserInfoService);
-  const { username, nickname } = data || {};
+  const { nickname, username } = useGetUserInfo() || {};
+  // const { data } = useRequest(getUserInfoService);
+  // const { username, nickname } = data || {};
   // setUserName(username);
   // setNickName(nickname);
 

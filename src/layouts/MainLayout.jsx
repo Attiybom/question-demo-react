@@ -1,12 +1,27 @@
-import { Outlet } from "react-router-dom";
-import { Layout, Space } from "antd";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Layout, Space, Spin } from "antd";
 import styles from "./MainLayout.module.scss";
 import Logo from "../components/Logo";
 import UserInfo from "../components/UserInfo";
+import useLoadUserData from "../hooks/useLoadUserData";
+import useNavPage from "../hooks/useNavPage";
+// import { isLoginOrRegister } from "../router";
+// import useGetUserInfo from "../hooks/useGetUserInfo";
 
 const { Header, Footer, Content } = Layout;
 
 export default function MainLayout() {
+  const waitingUserData = useLoadUserData();
+
+  useNavPage(waitingUserData);
+
+  // const pathname = useLocation();
+  // const { username } = useGetUserInfo();
+  // const nav = useNavigate();
+  // if (isLoginOrRegister(pathname) && username) {
+  //   nav("/manage/list");
+  // }
+
   return (
     <Layout>
       <Header className={styles.header}>
@@ -20,7 +35,13 @@ export default function MainLayout() {
 
       <Layout className={styles.main}>
         <Content>
-          <Outlet></Outlet>
+          {waitingUserData ? (
+            <div style={{ textAlign: "center", marginTop: `120px` }}>
+              <Spin></Spin>
+            </div>
+          ) : (
+            <Outlet></Outlet>
+          )}
         </Content>
       </Layout>
 

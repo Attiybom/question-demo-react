@@ -6,9 +6,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useRequest } from "ahooks";
 import { loginService } from "../services/user";
+// import { useDispatch } from "react-redux";
+// import { loginAction } from "../store/user";
 
 export default function Login() {
   const { Title } = Typography;
+
+  // const dispatch = useDispatch();
 
   const nav = useNavigate();
 
@@ -49,9 +53,10 @@ export default function Login() {
     {
       manual: true,
       debounceWait: 500,
-      onSuccess() {
+      onSuccess(res) {
+        // console.info("login-res", res);
         message.success("登录成功！");
-
+        // dispatch(loginAction())
         nav("/manage/list");
       },
     }
@@ -59,7 +64,7 @@ export default function Login() {
 
   // 提交
   const onFinish = (values) => {
-    console.log("Success:", values);
+    // console.log("Success:", values);
     const { username, password, remember } = values || {};
     handleLogin({
       username,

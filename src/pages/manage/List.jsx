@@ -36,7 +36,7 @@ export default function List() {
     {
       manual: true,
       onSuccess(res) {
-        console.info("loadMoreData");
+        // console.info("loadMoreData");
         const { list: MoreData, total: dataTotal } = res;
         setList(list.concat(MoreData));
         setTotal(dataTotal);
@@ -63,7 +63,7 @@ export default function List() {
         window.innerHeight + window.scrollY + 10 >=
         document.body.offsetHeight
       ) {
-        console.info("滚动到了页面底部");
+        // console.info("滚动到了页面底部");
         // 执行相关操作，如加载更多数据
         loadMoreData();
       }
