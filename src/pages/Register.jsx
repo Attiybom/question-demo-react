@@ -1,7 +1,7 @@
 import { Space, Typography } from "antd";
 import styles from "./Register.module.scss";
 import { UserAddOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input, message } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useRequest } from "ahooks";
 import { registerService } from "../services/user";

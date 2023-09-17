@@ -1,4 +1,4 @@
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Typography, Button } from "antd";
 import styles from "./Home.module.scss";
 import { useEffect } from "react";

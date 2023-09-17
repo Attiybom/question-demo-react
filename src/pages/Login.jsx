@@ -42,7 +42,7 @@ export default function Login() {
   useEffect(() => {
     const { username, password } = getInfoFromStorage();
     form.setFieldsValue({ username, password });
-  }, []);
+  }, [form]);
 
   // 登录逻辑
   const { run: handleLogin } = useRequest(

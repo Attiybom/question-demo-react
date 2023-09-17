@@ -5,7 +5,6 @@ import { getUserInfoService } from '../services/user'
 import { useDispatch } from 'react-redux'
 import { loginAction } from '../store/user'
 import { useLocation } from 'react-router-dom'
-import { isLoginOrRegister } from '../router/index'
 
 export default function useLoadUserData() {
   const [waitingUserData, setWaitingUserData] = useState(true)
@@ -34,7 +33,7 @@ export default function useLoadUserData() {
     } else {
       run() // 如果没有用户信息则执行
     }
-  }, [username, pathname])
+  }, [username, pathname, run])
 
 
   return waitingUserData

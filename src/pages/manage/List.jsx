@@ -76,7 +76,7 @@ export default function List() {
   // 组件渲染完成时，加载一次数据（即进入页面后）
   useEffect(() => {
     tryLoadMore();
-  }, [searchParams]);
+  }, [searchParams, tryLoadMore]);
 
   // 用户搜索时，重新加载数据
   // 添加事件：页面滚动时候，要尝试加载数据
@@ -92,7 +92,7 @@ export default function List() {
     return () => {
       window.removeEventListener("scroll", tryLoadMore);
     };
-  }, [searchParams, haveMoreData]);
+  }, [searchParams, haveMoreData, tryLoadMore]);
 
   // loadMoreElem
   const loadMoreContentElem = () => {
