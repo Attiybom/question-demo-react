@@ -7,11 +7,15 @@ import QuestionInput from "@/components/QuestionComponents/QuestionInput/compone
 const EditCanvas = () => {
   return (
     <div className={styles.canvas}>
-      <div>
-        <QuestionTitle></QuestionTitle>
+      <div className={styles[`component-wrapper`]}>
+        <div className={styles.component}>
+          <QuestionTitle></QuestionTitle>
+        </div>
       </div>
-      <div>
-        <QuestionInput></QuestionInput>
+      <div className={styles[`component-wrapper`]}>
+        <div className={styles.component}>
+          <QuestionInput></QuestionInput>
+        </div>
       </div>
     </div>
   );

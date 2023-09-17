@@ -14,8 +14,9 @@
   margin: 0 24px;
   display: flex;
   height: 100%;
+
   .left {
-    width: 285px;
+    width: 25%;
     background-color: #fff;
     padding: 0 12px;
   }
@@ -27,7 +28,7 @@
 
     .canvas-wrapper {
       position: absolute;
-      width: 400px;
+      width: 350px;
       height: 95%;
       top: 50%;
       left: 50%;
@@ -39,7 +40,7 @@
   }
 
   .right {
-    width: 300px;
+    width: 25%;
     background-color: #fff;
     padding: 0 12px;
   }

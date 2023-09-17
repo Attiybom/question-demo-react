@@ -22,7 +22,7 @@ export default function Index() {
   //   fn();
   // }, []);
 
-  // const { loading, data } = useLoadQuestionData();
+  const { loading, data } = useLoadQuestionData();
 
   return (
     <div className={styles.container}>

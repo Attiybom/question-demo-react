@@ -11,5 +11,4 @@ module.exports = {
       '@': path.join(__dirname, 'src')
     }
   }
-
 }
