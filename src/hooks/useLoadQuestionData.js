@@ -1,33 +1,51 @@
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-// import { useEffect, useState } from "react";
 import { getQuestionService } from "../services/question";
-
 import { useRequest } from "ahooks";
+import { useDispatch } from "react-redux";
+import { resetComponents } from "@/store/componentsReducer";
+
 
 export default function useLoadQuestionData() {
-  const { id = {} } = useParams()
+  // 从路由中获取id
+  const { id = {} } = useParams();
 
-  // const [loading, setLoading] = useState(true)
-  // const [questionData, setQuestionData] = useState({})
+  const dispatch = useDispatch()
 
-  // useEffect(() => {
-  //   async function fn() {
-  //     const data = await getQuestionService(id)
-  //     setQuestionData(data)
-  //     setLoading(false)
-  //   }
-  //   fn()
-  // }, [])
+  // ajax请求，获取问卷组件数据
+  const { loading, data, error, run } = useRequest(
+    async (id) => {
+      if (!id) throw new Error("没有问卷 id");
+      const data = await getQuestionService(id);
+      return data;
+    },
+    {
+      manual: true
+    }
+  );
 
-  async function load() {
-    const data = getQuestionService(id)
-    return data
-  }
+  // 判断id变化，执行ajax加载问卷数据
+  useEffect(() => {
+    run(id)
+  }, [id, run])
 
-  const { loading, data, error} = useRequest(load)
 
+  // 根据返回的数据获取
+  useEffect(() => {
+    if (!data) return
+    const { componentList = [] } = data
+
+    let selectedId = ''
+    if (componentList.length > 0) {
+      selectedId = componentList[0].fe_id // 默认选中第一个组件的id
+    }
+
+    // 把componentList存储到redux-store中
+    dispatch(resetComponents({componentList, selectedId}))
+  }, [data,dispatch])
 
   return {
-    loading, data, error
-  }
+    loading,
+    error,
+  };
 }

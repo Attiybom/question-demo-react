@@ -17,5 +17,8 @@
 
 .component {
   pointer-events: none; //屏蔽鼠标行为，不让组件被选中
+}
 
+.selected {
+  border-color: #1890ff !important;
 }

@@ -4,6 +4,8 @@
 import useLoadQuestionData from "../../../hooks/useLoadQuestionData";
 import styles from "./index.module.scss";
 import EditCanvas from "./EditCanvas";
+import { useDispatch } from "react-redux";
+import { changeSelectedId } from "@/store/componentsReducer";
 
 export default function Index() {
   // const { id = "" } = useParams();
@@ -22,7 +24,13 @@ export default function Index() {
   //   fn();
   // }, []);
 
-  const { loading, data } = useLoadQuestionData();
+  // 加载问卷信息，这个hooks会发送ajax请求，并把请求得到的数据存到store中
+  const { loading } = useLoadQuestionData();
+
+  const dispatch = useDispatch();
+  const clearSelectedId = () => {
+    dispatch(changeSelectedId(""));
+  };
 
   return (
     <div className={styles.container}>
@@ -31,10 +39,10 @@ export default function Index() {
       <div className={styles[`content-wrapper`]}>
         <div className={styles.content}>
           <div className={styles.left}>left</div>
-          <div className={styles.main}>
+          <div className={styles.main} onClick={clearSelectedId}>
             <div className={styles[`canvas-wrapper`]}>
               <div style={{ height: `900px` }}>
-                <EditCanvas></EditCanvas>
+                <EditCanvas loading={loading}></EditCanvas>
               </div>
             </div>
           </div>
