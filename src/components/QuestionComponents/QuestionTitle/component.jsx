@@ -19,6 +19,7 @@ const QuestionTitle = (props) => {
       style={{
         textAlign: isCenter ? "center" : "start",
         marginBottom: "0",
+        marginTop: "0",
         fontSize: genFontSize(level),
       }}
     >

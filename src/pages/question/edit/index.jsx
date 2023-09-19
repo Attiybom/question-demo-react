@@ -6,6 +6,7 @@ import styles from "./index.module.scss";
 import EditCanvas from "./EditCanvas";
 import { useDispatch } from "react-redux";
 import { changeSelectedId } from "@/store/componentsReducer";
+import LeftPanel from "./leftPanel/LeftPanel";
 
 export default function Index() {
   // const { id = "" } = useParams();
@@ -38,7 +39,9 @@ export default function Index() {
       {/* <div>{!waitingUserData && <Outlet></Outlet>}</div> */}
       <div className={styles[`content-wrapper`]}>
         <div className={styles.content}>
-          <div className={styles.left}>left</div>
+          <div className={styles.left}>
+            <LeftPanel></LeftPanel>
+          </div>
           <div className={styles.main} onClick={clearSelectedId}>
             <div className={styles[`canvas-wrapper`]}>
               <div style={{ height: `900px` }}>

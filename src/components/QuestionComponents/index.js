@@ -1,5 +1,5 @@
-import QuestionTitleConfig from './QuestionInput/index'
-import QuestionInputConfig from './QuestionTitle/index'
+import QuestionTitleConfig from './QuestionTitle/index'
+import QuestionInputConfig from './QuestionInput/index'
 
 const componentConfigList = [QuestionInputConfig, QuestionTitleConfig]
 
@@ -7,3 +7,19 @@ const componentConfigList = [QuestionInputConfig, QuestionTitleConfig]
 export function getComponentConfigByType(type) {
   return componentConfigList.find(c => c.type === type)
 }
+
+
+// 左侧画板 - 组件库 -组件分组
+export const componentConfigGroup = [
+  {
+    groupId: 'textGroup',
+    groupName: '文本显示',
+    components: [QuestionTitleConfig]
+  },
+  {
+    groupId: 'inputGroup',
+    groupName: '用户输入',
+    components: [QuestionInputConfig]
+  },
+
+]

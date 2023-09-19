@@ -27,3 +27,16 @@
 * 404页面：NotFound
 
 ## 路由文件夹——router
+
+
+
+## ui库 - antd-react
+
+## '@reduxjs/toolkit'
+* 内置immer功能，因此可以直接改state（否则要遵循不可变数据）
+
+## 编辑问卷
+* 编辑问卷: /question/edit
+页面结构分为上下结构：header + main
+main结构包含 左侧面板 + 中间画布 + 右侧问卷信息
+左侧面板（tabs）： 组件库 + 图层
