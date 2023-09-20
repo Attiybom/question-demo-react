@@ -7,14 +7,15 @@ export default function useGetComponentsInfo() {
 
   const components = useSelector(state => state.components)
 
-  const { componentList = [], selectedId } = components
+  const { componentList = [], selectedId, copiedComponent = null } = components;
 
-  const selectedComponent = componentList.find(c => c.fe_id === selectedId)
+  const selectedComponent = componentList.find((c) => c.fe_id === selectedId);
 
   return {
     componentList,
     selectedId,
-    selectedComponent
-  }
+    selectedComponent,
+    copiedComponent,
+  };
 
 }
