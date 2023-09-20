@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 // import {produce} from 'immer'
+import { getNextSelectedId } from "./utils";
 
 const INIT_STATE = {
   selectedId: "", //用于记录当前选中的组件，以便左（组件列表）中（画布）右（问卷信息）之间的信息联动
@@ -49,11 +50,28 @@ export const componentSlice = createSlice({
           ...newProps
         }
       }
+    },
+    // 删除选中的组件
+    removeComponent(state) {
+      const { selectedId, componentList } = state
+
+      const targetComponentIndex = componentList.findIndex(c => c.fe_id === selectedId)
+
+
+      const newSelectedID = getNextSelectedId(selectedId, componentList)
+      state.selectedId = newSelectedID
+
+      if (targetComponentIndex > -1) {
+        state.componentList.splice(targetComponentIndex, 1)
+      }
+
+      // 删除后自动选中下一个组件，因此需要重新计算selectedId
+
     }
   },
 });
 
-export const { resetComponents, changeSelectedId, addComponent, changeComponentProps } =
+export const { resetComponents, changeSelectedId, addComponent, changeComponentProps, removeComponent } =
   componentSlice.actions;
 
 export default componentSlice.reducer;

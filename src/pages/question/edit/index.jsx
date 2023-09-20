@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { changeSelectedId } from "@/store/componentsReducer";
 import LeftPanel from "./leftPanel/LeftPanel";
 import RightPanel from "./rightPanel/RightPanel";
+import EditHeader from "./EditHeader/EditHeader";
 
 export default function Index() {
   // const { id = "" } = useParams();
@@ -36,7 +37,9 @@ export default function Index() {
 
   return (
     <div className={styles.container}>
-      <div style={{ backgroundColor: "#fff", height: `40px` }}>header</div>
+      <div style={{ backgroundColor: "#fff", height: `40px` }}>
+        <EditHeader></EditHeader>
+      </div>
       {/* <div>{!waitingUserData && <Outlet></Outlet>}</div> */}
       <div className={styles[`content-wrapper`]}>
         <div className={styles.content}>

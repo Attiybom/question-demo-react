@@ -17,6 +17,7 @@ const ComponentPropTab = () => {
   // 选中的组件类型
   const { type, props } = selectedComponent;
   // 同组件类型获取到对于的组件配置
+  // console.info("props", props);
   const componentConfig = getComponentConfigByType(type);
   if (componentConfig == null) return <NoProp></NoProp>;
   // 从组件配置中获取到对应的属性面板
@@ -25,7 +26,7 @@ const ComponentPropTab = () => {
   // 组件属性变化
   function handlePropChange(newProps) {
     if (selectedComponent == null) return;
-    console.log("handlePropChange", newProps);
+    // console.log("handlePropChange", newProps);
     const { fe_id } = selectedComponent;
     dispatch(changeComponentProps({ fe_id, newProps }));
   }

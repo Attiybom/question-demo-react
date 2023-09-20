@@ -32,9 +32,9 @@ const EditCanvas = ({ loading = false }) => {
   const dispatch = useDispatch();
 
   const handleCpnClick = (event, id) => {
+    // console.log("handleCpnClick——fe_id", id);
     event.stopPropagation(); //组织冒泡
     dispatch(changeSelectedId(id));
-    // console.log("id", id);
   };
 
   if (loading) {

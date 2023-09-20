@@ -9,16 +9,15 @@ const PropsComponent = (props) => {
 
   // 监听组件的切换 当组件切换的时候，右侧组件的属性也跟着更新
   useEffect(() => {
-    form.setFieldValue({
+    form.setFieldsValue({
       title,
       placeholder,
     });
   }, [title, placeholder, form]);
 
   function handlePropsChange() {
-    console.log("handlePropsChange", form.getFieldValue());
     if (onChange) {
-      onChange(form.getFieldValue());
+      onChange(form.getFieldsValue());
     }
   }
 

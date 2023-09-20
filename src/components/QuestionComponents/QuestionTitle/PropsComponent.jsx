@@ -9,7 +9,7 @@ const PropsComponent = (props) => {
 
   // 监听组件的切换 当组件切换的时候，右侧组件的属性也跟着更新
   useEffect(() => {
-    form.setFieldValue({
+    form.setFieldsValue({
       text,
       level,
       isCenter,
@@ -19,7 +19,7 @@ const PropsComponent = (props) => {
   // 监听属性变化，同步到画布
   function handleValueChange() {
     if (onChange) {
-      onChange(form.getFieldValue());
+      onChange(form.getFieldsValue());
     }
   }
 
