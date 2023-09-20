@@ -16,6 +16,7 @@ import {
 } from "@/store/componentsReducer";
 import { useDispatch } from "react-redux";
 import useGetComponentsInfo from "@/hooks/useGetComponentsInfo";
+import useBindCanvasKeyPress from "@/hooks/useBindCanvasKeyPress";
 
 const EditToolbar = () => {
   const dispatch = useDispatch();
@@ -56,6 +57,9 @@ const EditToolbar = () => {
       dispatch(pasteCopiedComponent());
     }
   };
+
+  // 绑定功能快捷键
+  useBindCanvasKeyPress();
 
   return (
     <Space>
