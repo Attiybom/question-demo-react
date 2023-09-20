@@ -1,24 +1,40 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Typography } from "antd";
 import { componentConfigGroup } from "@/components/QuestionComponents";
 import styles from "./ComponentTab.module.scss";
+import { addComponent } from "@/store/componentsReducer";
+import { nanoid } from "@reduxjs/toolkit";
 
 const { Title } = Typography;
 
-// 生成组件函数
-function genComponent(componentConfig) {
-  const { Component } = componentConfig;
-
-  return (
-    <div className={styles.wrapper}>
-      <div className={styles.component}>
-        <Component></Component>
-      </div>
-    </div>
-  );
-}
-
 const ComponentTab = () => {
+  const dispatch = useDispatch();
+
+  // 生成组件函数
+  function genComponent(componentConfig) {
+    const { Component, title, type } = componentConfig;
+
+    // 用户点击组件，把选中的组件添加到画布
+    function handleClick() {
+      dispatch(
+        addComponent({
+          fe_id: nanoid(5),
+          title,
+          type,
+        })
+      );
+    }
+
+    return (
+      <div key={type} className={styles.wrapper} onClick={handleClick}>
+        <div className={styles.component}>
+          <Component></Component>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       {componentConfigGroup.map((group, index) => {

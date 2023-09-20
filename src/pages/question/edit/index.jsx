@@ -7,6 +7,7 @@ import EditCanvas from "./EditCanvas";
 import { useDispatch } from "react-redux";
 import { changeSelectedId } from "@/store/componentsReducer";
 import LeftPanel from "./leftPanel/LeftPanel";
+import RightPanel from "./rightPanel/RightPanel";
 
 export default function Index() {
   // const { id = "" } = useParams();
@@ -49,7 +50,9 @@ export default function Index() {
               </div>
             </div>
           </div>
-          <div className={styles.right}>right</div>
+          <div className={styles.right}>
+            <RightPanel />
+          </div>
         </div>
       </div>
     </div>
