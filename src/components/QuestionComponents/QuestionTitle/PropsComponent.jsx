@@ -3,7 +3,7 @@ import { Form, Input, Select, Checkbox } from "antd";
 
 const PropsComponent = (props) => {
   // 输入框有标题属性和默认文字属性
-  const { text, level, isCenter, onChange } = props;
+  const { text, level, isCenter, onChange, disabled } = props;
 
   const [form] = Form.useForm();
 
@@ -29,6 +29,7 @@ const PropsComponent = (props) => {
       layout="vertical"
       initialValues={{ text, level, isCenter }}
       onValuesChange={handleValueChange}
+      disabled={disabled}
     >
       <Form.Item
         label="标题内容"

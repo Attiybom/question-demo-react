@@ -47,28 +47,32 @@ const EditCanvas = ({ loading = false }) => {
 
   return (
     <div className={styles.canvas}>
-      {componentList.map((cpn) => {
-        const { fe_id } = cpn;
+      {componentList
+        .filter((c) => !c.isHidden)
+        .map((cpn) => {
+          const { fe_id, isLocked } = cpn;
 
-        // 拼接 class name
-        const wrapperDefaultClassName = styles[`component-wrapper`];
-        const selectdClassName = styles.selected;
-        const wrapperClassName = classNames({
-          [wrapperDefaultClassName]: true,
-          [selectdClassName]: selectedId === fe_id,
-        });
+          // 拼接 class name
+          const wrapperDefaultClassName = styles[`component-wrapper`];
+          const selectIdClassName = styles.selected;
+          const lockedClassName = styles.locked;
+          const wrapperClassName = classNames({
+            [wrapperDefaultClassName]: true,
+            [selectIdClassName]: selectedId === fe_id,
+            [lockedClassName]: isLocked,
+          });
 
-        // 这里把问卷列表数据传到getComponent函数中，通过这个函数找到对应的组件，最后渲染出来
-        return (
-          <div
-            className={wrapperClassName}
-            key={fe_id}
-            onClick={(e) => handleCpnClick(e, fe_id)}
-          >
-            <div className={styles.component}>{getComponent(cpn)}</div>
-          </div>
-        );
-      })}
+          // 这里把问卷列表数据传到getComponent函数中，通过这个函数找到对应的组件，最后渲染出来
+          return (
+            <div
+              className={wrapperClassName}
+              key={fe_id}
+              onClick={(e) => handleCpnClick(e, fe_id)}
+            >
+              <div className={styles.component}>{getComponent(cpn)}</div>
+            </div>
+          );
+        })}
 
       {/* 暂时写死 */}
       {/* <div className={styles[`component-wrapper`]}>

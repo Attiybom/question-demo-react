@@ -15,7 +15,7 @@ const ComponentPropTab = () => {
   // 未选中
   if (selectedComponent == null) return <NoProp></NoProp>;
   // 选中的组件类型
-  const { type, props } = selectedComponent;
+  const { type, props, isLocked, isHidden } = selectedComponent;
   // 同组件类型获取到对于的组件配置
   // console.info("props", props);
   const componentConfig = getComponentConfigByType(type);
@@ -32,7 +32,11 @@ const ComponentPropTab = () => {
   }
 
   return (
-    <PropsComponent {...props} onChange={handlePropChange}></PropsComponent>
+    <PropsComponent
+      {...props}
+      onChange={handlePropChange}
+      disabled={isLocked || isHidden}
+    ></PropsComponent>
   );
 };
 

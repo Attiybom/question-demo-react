@@ -20,13 +20,14 @@ export const componentSlice = createSlice({
     changeSelectedId: (state, action) => {
       state.selectedId = action.payload;
     },
+    // 添加组件
     addComponent(state, action) {
       const newComponent = action.payload;
 
       const { selectedId, componentList } = state;
 
       const targetIndex = componentList.findIndex(
-        (c) => (c.fe_id === selectedId)
+        (c) => c.fe_id === selectedId
       );
 
       if (targetIndex < 0) {
@@ -37,41 +38,85 @@ export const componentSlice = createSlice({
         state.componentList.splice(targetIndex + 1, 0, newComponent);
       }
 
-      state.selectedId = newComponent.fe_id
+      state.selectedId = newComponent.fe_id;
     },
     // 修改组件属性
     changeComponentProps(state, action) {
-      const { fe_id, newProps } = action.payload
+      const { fe_id, newProps } = action.payload;
       // 找到当前选中组件
-      const targetComponent = state.componentList.find(c => c.fe_id === fe_id)
+      const targetComponent = state.componentList.find(
+        (c) => c.fe_id === fe_id
+      );
       if (targetComponent) {
         targetComponent.props = {
           ...targetComponent.props,
-          ...newProps
-        }
+          ...newProps,
+        };
       }
     },
     // 删除选中的组件
     removeComponent(state) {
-      const { selectedId, componentList } = state
+      const { selectedId, componentList } = state;
 
-      const targetComponentIndex = componentList.findIndex(c => c.fe_id === selectedId)
-
-
-      const newSelectedID = getNextSelectedId(selectedId, componentList)
-      state.selectedId = newSelectedID
+      const targetComponentIndex = componentList.findIndex(
+        (c) => c.fe_id === selectedId
+      );
+      // 删除后自动选中下一个组件，因此需要重新计算selectedId
+      const newSelectedID = getNextSelectedId(selectedId, componentList);
+      state.selectedId = newSelectedID;
 
       if (targetComponentIndex > -1) {
-        state.componentList.splice(targetComponentIndex, 1)
+        state.componentList.splice(targetComponentIndex, 1);
+      }
+    },
+    // 隐藏/显示组件
+    changeComponentHidden(state, action) {
+      const { componentList } = state;
+
+      const { fe_id, isHidden } = action.payload;
+
+      // 重新计算selectId，因为如果只是控制隐藏，右侧的属性面板依然指向被隐藏的那个组件
+      let newSelectedID = "";
+
+      if (isHidden) {
+        // 隐藏
+        newSelectedID = getNextSelectedId(fe_id, componentList);
+      } else {
+        // 显示
+        newSelectedID = fe_id;
       }
 
-      // 删除后自动选中下一个组件，因此需要重新计算selectedId
+      state.selectedId = newSelectedID;
 
-    }
+      // 隐藏组件
+      const targetComponent = componentList.find((c) => c.fe_id === fe_id);
+      if (targetComponent) {
+        targetComponent.isHidden = isHidden;
+      }
+    },
+
+    // 锁定/解锁组件
+    toggleComponentLock(state, action) {
+      const { fe_id } = action.payload;
+
+      const targetComponent = state.componentList.find(
+        (c) => c.fe_id === fe_id
+      );
+      if (targetComponent) {
+        targetComponent.isLocked = !targetComponent.isLocked;
+      }
+    },
   },
 });
 
-export const { resetComponents, changeSelectedId, addComponent, changeComponentProps, removeComponent } =
-  componentSlice.actions;
+export const {
+  resetComponents,
+  changeSelectedId,
+  addComponent,
+  changeComponentProps,
+  removeComponent,
+  changeComponentHidden,
+  toggleComponentLock,
+} = componentSlice.actions;
 
 export default componentSlice.reducer;

@@ -3,7 +3,7 @@ import { Form, Input } from "antd";
 
 const PropsComponent = (props) => {
   // 输入框有标题属性和默认文字属性
-  const { title, placeholder, onChange } = props;
+  const { title, placeholder, onChange, disabled } = props;
 
   const [form] = Form.useForm();
 
@@ -27,6 +27,7 @@ const PropsComponent = (props) => {
       layout="vertical"
       initialValues={{ title, placeholder }}
       onValuesChange={handlePropsChange}
+      disabled={disabled}
     >
       <Form.Item
         label="标题"
