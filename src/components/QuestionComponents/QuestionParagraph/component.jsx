@@ -3,7 +3,7 @@ import { Typography } from "antd";
 
 const { Paragraph } = Typography;
 
-const QuestionParagraph = (props) => {
+const QuestionRadio = (props) => {
   const { text = "一行段落", isCenter = false } = props;
 
   // 换行实现: 方式一，但有安全危险
@@ -28,4 +28,4 @@ const QuestionParagraph = (props) => {
   );
 };
 
-export default QuestionParagraph;
+export default QuestionRadio;
