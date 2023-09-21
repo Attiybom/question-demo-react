@@ -18,7 +18,7 @@ const QuestionParagraph = (props) => {
     >
       {/* <span dangerouslySetInnerHTML={{ __html: newText }}></span> */}
       {textList.map((t, index) => (
-        <span>
+        <span key={index}>
           {/* 如果该文本不是第一个，则添加上一个br，换行 */}
           {index > 0 && <br></br>}
           {t}

@@ -1,11 +1,15 @@
 import QuestionTitleConfig from './QuestionTitle/index'
 import QuestionInputConfig from './QuestionInput/index'
 import QuestionParagraphConfig from "./QuestionParagraph/index";
+import QuestionInfoConfig from "./QuestionInfo/index";
+import QuestionTextareaConfig from "./QuestionTextarea/index";
 
 const componentConfigList = [
   QuestionInputConfig,
   QuestionTitleConfig,
   QuestionParagraphConfig,
+  QuestionInfoConfig,
+  QuestionTextareaConfig,
 ];
 
 // 全部的组件配置的列表，可以根据参数动态返回
@@ -20,11 +24,15 @@ export const componentConfigGroup = [
   {
     groupId: "textGroup",
     groupName: "文本显示",
-    components: [QuestionTitleConfig, QuestionParagraphConfig],
+    components: [
+      QuestionInfoConfig,
+      QuestionTitleConfig,
+      QuestionParagraphConfig,
+    ],
   },
   {
     groupId: "inputGroup",
     groupName: "用户输入",
-    components: [QuestionInputConfig],
+    components: [QuestionInputConfig, QuestionTextareaConfig],
   },
 ];

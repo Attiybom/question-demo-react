@@ -1,20 +1,21 @@
 import React, { useEffect } from "react";
-import { Form, Input, Checkbox } from "antd";
+import { Form, Input } from "antd";
 
 const { TextArea } = Input;
 
 const PropsComponent = (props) => {
-  const { text = "一行段落", isCenter = false, onChange, disabled } = props;
+  // 输入框有标题属性和默认文字属性
+  const { title = "问卷标题", desc = "问卷描述", onChange, disabled } = props;
 
   const [form] = Form.useForm();
 
   // 监听组件的切换 当组件切换的时候，右侧组件的属性也跟着更新
   useEffect(() => {
     form.setFieldsValue({
-      text,
-      isCenter,
+      title,
+      desc,
     });
-  }, [text, isCenter, form]);
+  }, [title, desc, form]);
 
   // 监听属性变化，同步到画布
   function handleValueChange() {
@@ -27,19 +28,23 @@ const PropsComponent = (props) => {
     <Form
       form={form}
       layout="vertical"
-      initialValues={{ text, isCenter }}
+      initialValues={{ title, desc }}
       onValuesChange={handleValueChange}
       disabled={disabled}
     >
       <Form.Item
+        label="标题内容"
+        name="title"
+        rules={[{ required: true, message: "请输入问卷标题" }]}
+      >
+        <Input></Input>
+      </Form.Item>
+      <Form.Item
         label="段落内容"
-        name="text"
-        rules={[{ required: true, message: "请输入段落内容" }]}
+        name="desc"
+        rules={[{ required: true, message: "请输入问卷段落" }]}
       >
         <TextArea></TextArea>
-      </Form.Item>
-      <Form.Item name="isCenter" valuePropName="checked">
-        <Checkbox>居中显示</Checkbox>
       </Form.Item>
     </Form>
   );
