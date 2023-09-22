@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import { Form, Input } from "antd";
 
+const { TextArea } = Input;
+
 const PropsComponent = (props) => {
   // 输入框有标题属性和默认文字属性
   const {
-    title = "输入框标题",
-    placeholder = "请输入",
+    title = "多行输入标题",
+    placeholder = "请输入...",
     onChange,
     disabled,
   } = props;
@@ -42,7 +44,7 @@ const PropsComponent = (props) => {
         <Input></Input>
       </Form.Item>
       <Form.Item label="placeholder" name="placeholder">
-        <Input></Input>
+        <TextArea></TextArea>
       </Form.Item>
     </Form>
   );

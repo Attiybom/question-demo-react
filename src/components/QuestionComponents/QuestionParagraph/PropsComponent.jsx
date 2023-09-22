@@ -1,15 +1,10 @@
 import React, { useEffect } from "react";
-import { Form, Input, Select, Checkbox } from "antd";
+import { Form, Input, Checkbox } from "antd";
+
+const { TextArea } = Input;
 
 const PropsComponent = (props) => {
-  // 输入框有标题属性和默认文字属性
-  const {
-    text = "一级标题",
-    level = 1,
-    isCenter = false,
-    onChange,
-    disabled,
-  } = props;
+  const { text = "一行段落", isCenter = false, onChange, disabled } = props;
 
   const [form] = Form.useForm();
 
@@ -17,10 +12,9 @@ const PropsComponent = (props) => {
   useEffect(() => {
     form.setFieldsValue({
       text,
-      level,
       isCenter,
     });
-  }, [text, level, isCenter, form]);
+  }, [text, isCenter, form]);
 
   // 监听属性变化，同步到画布
   function handleValueChange() {
@@ -33,34 +27,16 @@ const PropsComponent = (props) => {
     <Form
       form={form}
       layout="vertical"
-      initialValues={{ text, level, isCenter }}
+      initialValues={{ text, isCenter }}
       onValuesChange={handleValueChange}
       disabled={disabled}
     >
       <Form.Item
-        label="标题内容"
+        label="段落内容"
         name="text"
-        rules={[{ required: true, message: "请输入标题内容" }]}
+        rules={[{ required: true, message: "请输入段落内容" }]}
       >
-        <Input></Input>
-      </Form.Item>
-      <Form.Item label="层级" name="level">
-        <Select
-          options={[
-            {
-              value: 1,
-              text: 1,
-            },
-            {
-              value: 2,
-              text: 2,
-            },
-            {
-              value: 3,
-              text: 3,
-            },
-          ]}
-        ></Select>
+        <TextArea></TextArea>
       </Form.Item>
       <Form.Item name="isCenter" valuePropName="checked">
         <Checkbox>居中显示</Checkbox>

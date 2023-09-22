@@ -1,14 +1,11 @@
 import React, { useEffect } from "react";
 import { Form, Input } from "antd";
 
+const { TextArea } = Input;
+
 const PropsComponent = (props) => {
   // 输入框有标题属性和默认文字属性
-  const {
-    title = "输入框标题",
-    placeholder = "请输入",
-    onChange,
-    disabled,
-  } = props;
+  const { title = "问卷标题", desc = "问卷描述", onChange, disabled } = props;
 
   const [form] = Form.useForm();
 
@@ -16,11 +13,12 @@ const PropsComponent = (props) => {
   useEffect(() => {
     form.setFieldsValue({
       title,
-      placeholder,
+      desc,
     });
-  }, [title, placeholder, form]);
+  }, [title, desc, form]);
 
-  function handlePropsChange() {
+  // 监听属性变化，同步到画布
+  function handleValueChange() {
     if (onChange) {
       onChange(form.getFieldsValue());
     }
@@ -30,19 +28,23 @@ const PropsComponent = (props) => {
     <Form
       form={form}
       layout="vertical"
-      initialValues={{ title, placeholder }}
-      onValuesChange={handlePropsChange}
+      initialValues={{ title, desc }}
+      onValuesChange={handleValueChange}
       disabled={disabled}
     >
       <Form.Item
-        label="标题"
+        label="标题内容"
         name="title"
-        rules={[{ required: true, message: "请输入标题" }]}
+        rules={[{ required: true, message: "请输入问卷标题" }]}
       >
         <Input></Input>
       </Form.Item>
-      <Form.Item label="placeholder" name="placeholder">
-        <Input></Input>
+      <Form.Item
+        label="段落内容"
+        name="desc"
+        rules={[{ required: true, message: "请输入问卷段落" }]}
+      >
+        <TextArea></TextArea>
       </Form.Item>
     </Form>
   );
