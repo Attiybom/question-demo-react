@@ -132,6 +132,17 @@ export const componentSlice = createSlice({
       copiedComponent.fe_id = nanoid();
       addAndPasteComponent(selectedId, componentList, copiedComponent);
     },
+
+    // 修改标题
+    changeComponentTitle(state, action) {
+      const { title, fe_id } = action.payload;
+
+      const targetComponent = state.componentList.find(
+        (c) => c.fe_id === fe_id
+      );
+
+      if (targetComponent) targetComponent.title = title;
+    },
   },
 });
 
@@ -145,6 +156,7 @@ export const {
   toggleComponentLock,
   copySelectedComponent,
   pasteCopiedComponent,
+  changeComponentTitle,
 } = componentSlice.actions;
 
 export default componentSlice.reducer;
