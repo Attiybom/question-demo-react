@@ -19,6 +19,11 @@ const RightPanel = () => {
     }
   }, [selectedId]);
 
+  function changeTab(key) {
+    // console.log("key", key);
+    setActiveKey(key);
+  }
+
   const tabsItems = [
     {
       key: "prop",
@@ -42,7 +47,9 @@ const RightPanel = () => {
     },
   ];
 
-  return <Tabs activeKey={activeKey} items={tabsItems} />;
+  return (
+    <Tabs activeKey={activeKey} items={tabsItems} onTabClick={changeTab} />
+  );
 };
 
 export default RightPanel;
