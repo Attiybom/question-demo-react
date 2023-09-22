@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Tabs } from "antd";
 import { FileTextOutlined, SettingOutlined } from "@ant-design/icons";
 import ComponentPropTab from "./ComponentPropTab";
+import PageSetting from "./PageSetting";
+import useGetComponentsInfo from "@/hooks/useGetComponentsInfo";
 
 const RightPanel = () => {
-  const onChange = () => {};
+  const [activeKey, setActiveKey] = useState("prop");
+
+  const { selectedId } = useGetComponentsInfo();
+
+  // 动态改变tab
+  useEffect(() => {
+    if (selectedId) {
+      setActiveKey("prop");
+    } else {
+      setActiveKey("setting");
+    }
+  }, [selectedId]);
 
   const tabsItems = [
     {
@@ -25,11 +38,11 @@ const RightPanel = () => {
           页面设置
         </span>
       ),
-      children: <div>页面设置</div>,
+      children: <PageSetting />,
     },
   ];
 
-  return <Tabs defaultActiveKey="prop" items={tabsItems} onChange={onChange} />;
+  return <Tabs activeKey={activeKey} items={tabsItems} />;
 };
 
 export default RightPanel;
