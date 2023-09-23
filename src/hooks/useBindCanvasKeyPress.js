@@ -14,8 +14,15 @@ function isActiveElementVaild() {
   // 通过 document.activeElement 能获取到当前光标选中的元素
   const activeElem = document.activeElement;
 
-  // 光标没有focus到input类元素
+  // 光标没有focus到input类元素 => 仅适用于没有添加dnd-kit前
+  // if (activeElem === document.body) return true;
+
+  // 光标没有focus到input类元素 => 适用于添加dnd-kit后
   if (activeElem === document.body) return true;
+  // role="button" => css查询器
+  if (activeElem?.matches(`div[role="button"]`)) return true;
+
+  //
 
   // 光标focus到input类元素，即当前用户可能在删除输入框的文字
   return false;

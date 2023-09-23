@@ -6,6 +6,8 @@ import {
   LockOutlined,
   CopyOutlined,
   BlockOutlined,
+  UpOutlined,
+  DownOutlined,
 } from "@ant-design/icons";
 import {
   removeComponent,
@@ -13,6 +15,7 @@ import {
   toggleComponentLock,
   copySelectedComponent,
   pasteCopiedComponent,
+  moveComponent,
 } from "@/store/componentsReducer";
 import { useDispatch } from "react-redux";
 import useGetComponentsInfo from "@/hooks/useGetComponentsInfo";
@@ -26,7 +29,14 @@ const EditToolbar = () => {
     selectedId,
     selectedComponent,
     copiedComponent = null,
+    componentList = [],
   } = useGetComponentsInfo();
+
+  // 当前选中组件的index
+  const length = componentList.length;
+  const targetIndex = componentList.findIndex((c) => c.fe_id === selectedId);
+  const isFirstCpn = targetIndex <= 0; // 是否是第一个组件
+  const isLastCpn = targetIndex + 1 >= length; //是否是最后一个组件
 
   //
   const { isLocked } = selectedComponent || {};
@@ -56,6 +66,22 @@ const EditToolbar = () => {
     if (copiedComponent) {
       dispatch(pasteCopiedComponent());
     }
+  };
+
+  // 组件上移功能
+  const handleMoveUpCpn = () => {
+    if (isFirstCpn) return;
+    dispatch(
+      moveComponent({ oldIndex: targetIndex, newIndex: targetIndex - 1 })
+    );
+  };
+
+  // 组件下移功能
+  const handleMoveDownCpn = () => {
+    if (isFirstCpn) return;
+    dispatch(
+      moveComponent({ oldIndex: targetIndex, newIndex: targetIndex + 1 })
+    );
   };
 
   // 绑定功能快捷键
@@ -98,6 +124,22 @@ const EditToolbar = () => {
           icon={<BlockOutlined></BlockOutlined>}
           onClick={handlePasteCpn}
           disabled={copiedComponent == null}
+        ></Button>
+      </Tooltip>
+      <Tooltip title="上移">
+        <Button
+          shape="circle"
+          icon={<UpOutlined></UpOutlined>}
+          onClick={handleMoveUpCpn}
+          disabled={isFirstCpn}
+        ></Button>
+      </Tooltip>
+      <Tooltip title="下移">
+        <Button
+          shape="circle"
+          icon={<DownOutlined></DownOutlined>}
+          onClick={handleMoveDownCpn}
+          disabled={isLastCpn}
         ></Button>
       </Tooltip>
     </Space>
