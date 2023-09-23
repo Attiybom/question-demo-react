@@ -87,8 +87,8 @@
 
 * 中间画布
   1. 文本框换行问题 => 参考questionParagraph =>component.jsx
-  2. 拖拽排序功能
-
+  2. 拖拽排序功能 ：
+  封装 SortSortableContainer 和 SortableItem 组件
 
 * 右侧组件信息
   1. 同步显示中间画布选中的组件信息（根据selectedId显示）
