@@ -16,7 +16,7 @@ const pageInfoReducer = createSlice({
     },
     changePageTitle(state, action) {
       state.title = action.payload;
-    },
+    }
   },
 });
 
