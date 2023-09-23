@@ -5,6 +5,7 @@ import {
   copySelectedComponent,
   pasteCopiedComponent,
 } from "@/store/componentsReducer";
+import { ActionCreators } from "redux-undo";
 
 /**
  * @description 需要判断当前的光标选中的元素是否是画布中的元素，而非是属性面板或左侧组件库中的元素
@@ -50,5 +51,21 @@ export default function useBindCanvasKeyPress() {
     // 如果当前元素是输入框类元素，则直接返回
     if (!isActiveElementVaild()) return;
     dispatch(pasteCopiedComponent());
+  });
+
+  // 撤销
+  useKeyPress(
+    ["ctrl.z", "meta.z"],
+    () => {
+      dispatch(ActionCreators.undo());
+    },
+    {
+      exactMatch: true, // 严格匹配，必须只按了ctrl+z
+    }
+  );
+
+  // 重做
+  useKeyPress(["ctrl.shift.z", "meta.shift.z"], () => {
+    dispatch(ActionCreators.redo());
   });
 }

@@ -8,6 +8,8 @@ import {
   BlockOutlined,
   UpOutlined,
   DownOutlined,
+  UndoOutlined,
+  RedoOutlined,
 } from "@ant-design/icons";
 import {
   removeComponent,
@@ -18,6 +20,7 @@ import {
   moveComponent,
 } from "@/store/componentsReducer";
 import { useDispatch } from "react-redux";
+import { ActionCreators } from "redux-undo";
 import useGetComponentsInfo from "@/hooks/useGetComponentsInfo";
 import useBindCanvasKeyPress from "@/hooks/useBindCanvasKeyPress";
 
@@ -84,6 +87,16 @@ const EditToolbar = () => {
     );
   };
 
+  // 撤销/
+  function undo() {
+    dispatch(ActionCreators.undo());
+  }
+
+  // 重做
+  function redo() {
+    dispatch(ActionCreators.redo());
+  }
+
   // 绑定功能快捷键
   useBindCanvasKeyPress();
 
@@ -140,6 +153,20 @@ const EditToolbar = () => {
           icon={<DownOutlined></DownOutlined>}
           onClick={handleMoveDownCpn}
           disabled={isLastCpn}
+        ></Button>
+      </Tooltip>
+      <Tooltip title="撤销">
+        <Button
+          shape="circle"
+          icon={<UndoOutlined></UndoOutlined>}
+          onClick={undo}
+        ></Button>
+      </Tooltip>
+      <Tooltip title="重做">
+        <Button
+          shape="circle"
+          icon={<RedoOutlined></RedoOutlined>}
+          onClick={redo}
         ></Button>
       </Tooltip>
     </Space>
