@@ -60,7 +60,10 @@
   6. 组件的上移和下移功能 => 实现方式与组件的拖拽类似
    - 添加拖拽功能后有可能与之前的功能冲突，比如快捷键复制和删除功能
    - 原因在于第三方库dnd-kit会为组件套上一层，需要修改样式 + 快捷键件的移动判断
-
+  7. 撤销重做功能
+   * present => 保存当前数据
+   * past(undo-stack) => 历史数据列表
+   * future(redo-stack) => 将来数据列表
 
 * 工具栏添加快捷键功能
   1. 使用ahooks中的useKeyPress hook来实现，具体看useBindCanvasKeyPress.js文件
