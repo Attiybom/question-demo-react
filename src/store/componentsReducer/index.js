@@ -4,6 +4,7 @@ import { getNextSelectedId } from "./utils";
 import cloneDeep from "lodash.clonedeep";
 import { nanoid } from "nanoid";
 import { addAndPasteComponent } from "./utils";
+import { arrayMove } from "@dnd-kit/sortable";
 
 const INIT_STATE = {
   selectedId: "", //用于记录当前选中的组件，以便左（组件列表）中（画布）右（问卷信息）之间的信息联动
@@ -143,6 +144,15 @@ export const componentSlice = createSlice({
 
       if (targetComponent) targetComponent.title = title;
     },
+
+    // 移动组件
+    moveComponent(state, action) {
+      const { componentList: curComponentList = [] } = state;
+      const { oldIndex, newIndex } = action.payload;
+
+      // 移动数组：目标数组，原来的index，移动到的newIndex
+      state.componentList = arrayMove(curComponentList, oldIndex, newIndex);
+    },
   },
 });
 
@@ -157,6 +167,7 @@ export const {
   copySelectedComponent,
   pasteCopiedComponent,
   changeComponentTitle,
+  moveComponent,
 } = componentSlice.actions;
 
 export default componentSlice.reducer;

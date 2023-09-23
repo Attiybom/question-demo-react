@@ -57,6 +57,13 @@
   （同时锁定对应的组件右侧的属性面板）
   4. 复制 => 找到当前选中的组件id，然后深拷贝选中组件并进行存储
   5. 粘贴 => 先判断store是否存在已复制的组件信息，如果有则将组件信息push到组件列表中
+  6. 组件的上移和下移功能 => 实现方式与组件的拖拽类似
+   - 添加拖拽功能后有可能与之前的功能冲突，比如快捷键复制和删除功能
+   - 原因在于第三方库dnd-kit会为组件套上一层，需要修改样式 + 快捷键件的移动判断
+  7. 撤销重做功能 - 使用第三方插件redux-undo => 详见redux_undo.md
+   * present => 保存当前数据
+   * past(undo-stack) => 历史数据列表
+   * future(redo-stack) => 将来数据列表
 
 * 工具栏添加快捷键功能
   1. 使用ahooks中的useKeyPress hook来实现，具体看useBindCanvasKeyPress.js文件
@@ -87,8 +94,9 @@
 
 * 中间画布
   1. 文本框换行问题 => 参考questionParagraph =>component.jsx
-  2. 拖拽排序功能
-
+  2. 拖拽排序功能 ：
+  封装 SortSortableContainer 和 SortableItem 组件
+  使用在图层和画布中
 
 * 右侧组件信息
   1. 同步显示中间画布选中的组件信息（根据selectedId显示）

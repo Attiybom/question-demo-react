@@ -32,8 +32,8 @@ const SortableContainer = (props) => {
     if (over == null) return;
 
     if (active.id !== over.id) {
-      const oldIndex = items.find((c) => c.fe_id === active.id);
-      const newIndex = items.find((c) => c.fe_id === over.id);
+      const oldIndex = items.findIndex((c) => c.fe_id === active.id);
+      const newIndex = items.findIndex((c) => c.fe_id === over.id);
       onDragEnd(oldIndex, newIndex);
     }
   }

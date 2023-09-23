@@ -13,9 +13,12 @@ import {
   toggleComponentLock,
   changeSelectedId,
   changeComponentTitle,
+  moveComponent,
 } from "@/store/componentsReducer";
 import classNames from "classnames";
 import styles from "./LayoutTab.module.scss";
+import SortableContainer from "@/components/DragSortable/SortableContainer";
+import SortableItem from "@/components/DragSortable/SortableItem";
 
 const LayoutTab = () => {
   const { componentList, selectedId } = useGetComponentsInfo();
@@ -60,8 +63,23 @@ const LayoutTab = () => {
     dispatch(toggleComponentLock({ fe_id }));
   };
 
+  // SortableContainer组件的items属性，需要每一个item都需要id属性
+  const componentListWithId = componentList.map((c) => {
+    return {
+      ...c,
+      id: c.fe_id,
+    };
+  });
+
+  // 拖拽结束函数
+  function handleDragEnd(oldIndex, newIndex) {
+    // console.log("handleDragEnd", oldIndex, newIndex);
+
+    dispatch(moveComponent({ oldIndex, newIndex }));
+  }
+
   return (
-    <>
+    <SortableContainer items={componentListWithId} onDragEnd={handleDragEnd}>
       <div>
         {componentList.map((cpn) => {
           const { fe_id, title, isLocked, isHidden } = cpn;
@@ -75,50 +93,52 @@ const LayoutTab = () => {
           });
 
           return (
-            <div key={fe_id} className={styles[`wrapper`]}>
-              <div
-                className={titleClassName}
-                onClick={() => handleTitleClick(fe_id)}
-              >
-                {fe_id === changingTitleId && (
-                  <Input
-                    value={title}
-                    // 回车和失焦的时候也重置
-                    onPressEnter={() => setChangingTitleId("")}
-                    onBlur={() => setChangingTitleId("")}
-                    // 修改标题
-                    onChange={(e) => handleChangeTitle(e)}
-                  />
-                )}
-                {!(fe_id === changingTitleId) && title}
+            <SortableItem key={fe_id} id={fe_id}>
+              <div className={styles[`wrapper`]}>
+                <div
+                  className={titleClassName}
+                  onClick={() => handleTitleClick(fe_id)}
+                >
+                  {fe_id === changingTitleId && (
+                    <Input
+                      value={title}
+                      // 回车和失焦的时候也重置
+                      onPressEnter={() => setChangingTitleId("")}
+                      onBlur={() => setChangingTitleId("")}
+                      // 修改标题
+                      onChange={(e) => handleChangeTitle(e)}
+                    />
+                  )}
+                  {!(fe_id === changingTitleId) && title}
+                </div>
+                <div className={styles[`handler`]}>
+                  <Space>
+                    <Button
+                      icon={
+                        !isHidden ? <EyeOutlined /> : <EyeInvisibleOutlined />
+                      }
+                      size="small"
+                      shape="circle"
+                      type={isHidden ? "primary" : "text"}
+                      className={!isHidden ? styles.btn : ""}
+                      onClick={() => handleClickHidden(fe_id, isHidden)}
+                    ></Button>
+                    <Button
+                      icon={isLocked ? <LockOutlined /> : <UnlockOutlined />}
+                      size="small"
+                      shape="circle"
+                      type={isLocked ? "primary" : "text"}
+                      className={!isLocked ? styles.btn : ""}
+                      onClick={() => handleClickLock(fe_id)}
+                    ></Button>
+                  </Space>
+                </div>
               </div>
-              <div className={styles[`handler`]}>
-                <Space>
-                  <Button
-                    icon={
-                      !isHidden ? <EyeOutlined /> : <EyeInvisibleOutlined />
-                    }
-                    size="small"
-                    shape="circle"
-                    type={isHidden ? "primary" : "text"}
-                    className={!isHidden ? styles.btn : ""}
-                    onClick={() => handleClickHidden(fe_id, isHidden)}
-                  ></Button>
-                  <Button
-                    icon={isLocked ? <LockOutlined /> : <UnlockOutlined />}
-                    size="small"
-                    shape="circle"
-                    type={isLocked ? "primary" : "text"}
-                    className={!isLocked ? styles.btn : ""}
-                    onClick={() => handleClickLock(fe_id)}
-                  ></Button>
-                </Space>
-              </div>
-            </div>
+            </SortableItem>
           );
         })}
       </div>
-    </>
+    </SortableContainer>
   );
 };
 
