@@ -2,6 +2,7 @@
 // import { useEffect, useState } from "react";
 // import { getQuestionService } from "../../../services/question";
 import useLoadQuestionData from "../../../hooks/useLoadQuestionData";
+import useGetPageInfo from "@/hooks/useGetPageInfo";
 import styles from "./index.module.scss";
 import EditCanvas from "./EditCanvas";
 import { useDispatch } from "react-redux";
@@ -9,6 +10,7 @@ import { changeSelectedId } from "@/store/componentsReducer";
 import LeftPanel from "./leftPanel/LeftPanel";
 import RightPanel from "./rightPanel/RightPanel";
 import EditHeader from "./EditHeader/EditHeader";
+import { useTitle } from "ahooks";
 
 export default function Index() {
   // const { id = "" } = useParams();
@@ -34,6 +36,10 @@ export default function Index() {
   const clearSelectedId = () => {
     dispatch(changeSelectedId(""));
   };
+
+  // 修改标题
+  const { title } = useGetPageInfo();
+  useTitle(`问卷编辑 - ${title}`);
 
   return (
     <div className={styles.container}>

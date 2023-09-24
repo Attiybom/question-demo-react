@@ -38,6 +38,7 @@ export default function useLoadQuestionData() {
       css = "",
       title = "",
       desc = "",
+      isPublished,
     } = data;
 
     let selectedId = "";
@@ -50,7 +51,7 @@ export default function useLoadQuestionData() {
       resetComponents({ componentList, selectedId, copiedComponent: null })
     );
     // 把服务端的页面信息存到redux store中
-    dispatch(resetPageInfo({ desc, title, js, css }));
+    dispatch(resetPageInfo({ desc, title, js, css, isPublished }));
   }, [data, dispatch]);
 
   return {
