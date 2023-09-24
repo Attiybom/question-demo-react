@@ -5,6 +5,7 @@ const INIT_VALUE = {
   desc: "",
   js: "", //js代码
   css: "", //css代码
+  // isPublished: false
 };
 
 const pageInfoReducer = createSlice({
