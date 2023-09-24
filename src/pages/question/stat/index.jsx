@@ -1,15 +1,24 @@
-import useLoadQuestionData from "../../../hooks/useLoadQuestionData";
 import useGetPageInfo from "@/hooks/useGetPageInfo";
+import useLoadQuestionData from "../../../hooks/useLoadQuestionData";
+import { useState } from "react";
 import { Button, Result, Spin } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useTitle } from "ahooks";
+
+import LeftComponentList from "./leftList/LeftComponentList";
 import StatHeader from "./statHeader/StatHeader";
+import MainStatTable from "./mainStatTable/MainStatTable";
+
 import styles from "./index.module.scss";
 
 export default function Index() {
   const nav = useNavigate();
   const { loading } = useLoadQuestionData();
   const { title, isPublished } = useGetPageInfo();
+
+  // 状态提升，记录选中的组件和组件类型
+  const [selectComponentId, setSelectComponentId] = useState("");
+  const [selectComponentType, setSelectComponentType] = useState("");
 
   // 修改标题
   useTitle(`问卷统计 - ${title}`);
@@ -58,8 +67,24 @@ export default function Index() {
     } else {
       return (
         <>
-          <div className={styles.left}>left</div>
-          <div className={styles.main}>main</div>
+          <div className={styles.left}>
+            <LeftComponentList
+              {...{
+                selectComponentId,
+                setSelectComponentId,
+                setSelectComponentType,
+              }}
+            />
+          </div>
+          <div className={styles.main}>
+            <MainStatTable
+              {...{
+                selectComponentId,
+                setSelectComponentId,
+                setSelectComponentType,
+              }}
+            />
+          </div>
           <div className={styles.right}>right</div>
         </>
       );
