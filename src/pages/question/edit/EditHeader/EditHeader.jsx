@@ -69,6 +69,9 @@ const EditHeader = () => {
       {
         manual: true,
         debounceWait: 500,
+        onSuccess() {
+          message.success("保存成功！");
+        },
       }
     );
 
