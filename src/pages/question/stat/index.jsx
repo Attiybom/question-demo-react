@@ -5,9 +5,10 @@ import { Button, Result, Spin } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useTitle } from "ahooks";
 
-import LeftComponentList from "./leftList/LeftComponentList";
 import StatHeader from "./statHeader/StatHeader";
+import LeftComponentList from "./leftList/LeftComponentList";
 import MainStatTable from "./mainStatTable/MainStatTable";
+import StatChart from "./rightChart/StatChart";
 
 import styles from "./index.module.scss";
 
@@ -85,7 +86,14 @@ export default function Index() {
               }}
             />
           </div>
-          <div className={styles.right}>right</div>
+          <div className={styles.right}>
+            <StatChart
+              {...{
+                selectComponentId,
+                selectComponentType,
+              }}
+            ></StatChart>
+          </div>
         </>
       );
     }
