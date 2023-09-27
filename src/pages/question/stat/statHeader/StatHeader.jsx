@@ -43,7 +43,7 @@ const StatHeader = () => {
     if (!isPublished) return null;
 
     // 拼接url - 配合c端的参考
-    const url = `http://localhost:3000/question/stat/${id}`;
+    const url = `http://localhost:3000/question/${id}`;
 
     // 二维码组件
     const QRCodeElem = (
